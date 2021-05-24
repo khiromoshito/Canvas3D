@@ -19,7 +19,7 @@ export class ViewStreamer {
      * @param {HTMLCanvasElement} canvas
      */
     addCanvas(canvas) {
-
+        console.log("Added a canvas to stream");
     }
 
 
