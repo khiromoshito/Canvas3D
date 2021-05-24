@@ -1,3 +1,4 @@
+import { Context3D } from "./Context3D.js";
 
 
 export class Canvas3D {
@@ -7,6 +8,10 @@ export class Canvas3D {
      */
     constructor() {
 
+        /** The context for this canvas where object transactions are made 
+         * @type {Context3D}
+        */
+        this.context = new Context3D();
     }
 
     /**
