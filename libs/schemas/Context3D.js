@@ -26,7 +26,8 @@ export class Context3D {
      * @param {{x:number, y:number, z:number, rx:number, ry:number, rz:number}} options 
      */
     addRaw(model, options = {}) {
-
+        const object = new Object3D(model, options);
+        this.add(object);
     }
 
 }
