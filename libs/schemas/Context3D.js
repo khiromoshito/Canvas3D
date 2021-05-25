@@ -1,7 +1,12 @@
+import { Collection } from "./Collection.js";
 import { Model3D } from "./Model3D.js";
 import { Object3D } from "./Object3D.js";
+import { Vector3D } from "./vectors/Vector3D.js";
+
 
 export class Context3D {
+
+
     
     /**
      * Manages objects from `Canvas3D` like adding, drawing, removing and plotting.
@@ -9,6 +14,16 @@ export class Context3D {
      */
     constructor() {
 
+        /**
+         * This context's collection of objects
+         * @type {Map<String, Object3D>}
+         */
+        this.objects = new Map();
+
+        this.drawables = new Map();
+
+
+        this._counter = 0;
     }
 
     /**
@@ -16,7 +31,12 @@ export class Context3D {
      * @param {Object3D} object 
      */
     add(object) {
+        const oid = ++this._counter;
+        object.id = oid;
 
+        this.objects.set(`${oid}`, object);
+
+        console.log(`Added object`);
     }
 
 
@@ -28,6 +48,15 @@ export class Context3D {
     addRaw(model, options = {}) {
         const object = new Object3D(model, options);
         this.add(object);
+    }
+
+    /** Directly draws a line into the 3d canvas 
+     * @param {Vector3D | {x: number, y: number, z: number}} p1
+     * @param {Vector3D | {x: number, y: number, z: number}} p2
+     * @param {{color: string, width: number}} style
+    */
+    drawLine(p1, p2, style = {}) {
+
     }
 
 }

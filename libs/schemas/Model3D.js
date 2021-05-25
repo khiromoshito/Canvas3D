@@ -1,4 +1,4 @@
-import { RectFrame3D } from "./RectFrame3D";
+import { RectFrame3D } from "./RectFrame3D.js";
 
 export class Model3D {
     /**

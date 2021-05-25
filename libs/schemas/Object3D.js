@@ -1,6 +1,6 @@
 import { Model3D } from "./Model3D.js";
 import { RectFrame3D } from "./RectFrame3D.js";
-import { Vector3D } from "./Vector3D.js";
+import { Vector3D } from "./vectors/Vector3D.js";
 
 export class Object3D {
     /**

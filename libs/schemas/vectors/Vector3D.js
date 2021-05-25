@@ -19,34 +19,39 @@ export class Vector3D {
     
     }
 
-   /**
-    * Moves the values by increment and returns a corresponding vector
+    /**
+    * Moves the coordinates by increment and returns a corresponding vector
     * 
     * `mutating`: Whether to affect original vector (defaults to true)
-    * @param {number} x 
-    * @param {number} y 
-    * @param {number} z 
-    * @param {Boolean} mutating
+    * @param {number} offsetX
+    * @param {number} offsetY
+    * @param {number} offsetZ
+    * @param {boolean} mutating
+    * @returns {Vector2D}
     */
-    shift(x, y, z, mutating = true) {
-        
+    shift(offsetX, offsetY, offsetZ, mutating = true) {
+
         const newValues = [
-            this.x + x,
-            this.y + y,
-            this.z + z
+            this.x + offsetX, this.y + offsetY, this.z + offsetZ
         ];
 
-        if(mutating) {
-            this.x = newValues[0];
-            this.y = newValues[1];
-            this.z = newValues[2];
-        }
-        
-        return new Vector3D(...newValues);
+        if(mutating)
+            return this.set(...newValues);
+        else
+            return new Vector3D(...newValues);
+    }
+
+    /** Changes this vector's coordinates */
+    set(x, y, z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+
+        return this;
     }
 
     toString() {
-        return `V(${this.x}, ${this.y}, ${this.z})`;
+        return `V(${this.toArray().join(", ")})`;
     }
 
     /** Converts this to a 3-item array */

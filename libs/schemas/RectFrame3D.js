@@ -1,4 +1,4 @@
-import { Vector3D } from "./Vector3D.js";
+import { Vector3D } from "./vectors/Vector3D.js";
 
 
 export class RectFrame3D {
@@ -17,7 +17,7 @@ export class RectFrame3D {
         /** This frame's side lengths 
          * @type {Vector3D}
         */
-        this.lengths = new Vector3D(options.lx || 0, options.ly || options.lz || 0);
+        this.lengths = new Vector3D(options.lx || 0, options.ly || 0, options.lz || 0);
     }
 
     /** Returns an array `Vector3D` corresponding to this frame's eight vertices.

@@ -1,3 +1,4 @@
+import { Camera } from "./Camera.js";
 import { Context3D } from "./Context3D.js";
 
 
@@ -22,7 +23,8 @@ export class Canvas3D {
      * @param {{quality: number}} options 
      */
     install(camera, options = {}) {
-        
+        camera.canvas = this;
+        camera._start();
     }
 
     /**
@@ -30,7 +32,8 @@ export class Canvas3D {
      * @param {Camera} camera
      */
     uninstall(camera) {
-
+        camera._stop();
+        camera.canvas = null;
     }
 
 
