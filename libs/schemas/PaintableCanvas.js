@@ -17,22 +17,25 @@ export class PaintableCanvas {
      * @param {StreamData2D} data
     */
     render(data) {
-        const shapes = data.shapes;
-        shapes.forEach(shape => this.drawShape(shape));
+        const shapes = data.getShapes();
+        const context = this.canvas.getContext("2d");
+        const dimensions = new Vector2D(this.canvas.width, this.canvas.height);
+        context.clearRect(0, 0, dimensions.x, dimensions.y);
+
+        shapes.forEach(shape => this.drawShape(context, dimensions, shape));
     }
 
-    /** Draws a shape to the canvas 
+    /** Draws a shape to the canvas
      * @param {ShapeData} shape
     */
-    drawShape(shape) {
-        const context = this.canvas.getContext("2d");
+    drawShape(context, dimensions, shape) {
+        
         const _fillStyle = context.fillStyle;
         const _lineWidth = context.lineWidth;
         const _strokeStyle = context.strokeStyle;
 
-        const dimensions = new Vector2D(this.canvas.width, this.canvas.height);
         
-        context.clearRect(0, 0, dimensions.x, dimensions.y);
+        
 
         context.beginPath();
         for(let i = 0; i<shape.vertices.length; i++) {
@@ -41,13 +44,15 @@ export class PaintableCanvas {
 
             if(i===0) context.moveTo(vertex.x, vertex.y);
             else context.lineTo(vertex.x, vertex.y);
+
+            //console.log(vertex);
         }
 
         context.closePath();
 
         context.fillStyle = shape.style.fillColor || "transparent";
-        context.lineWidth = shape.style.strokeWidth || 2;
-        context.strokeStyle = shape.style.strokeColor || "blue";
+        context.lineWidth = shape.style.strokeWidth || 0;
+        context.strokeStyle = shape.style.strokeColor || "transparent";
 
         context.fill();
         context.stroke();

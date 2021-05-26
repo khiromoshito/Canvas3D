@@ -8,7 +8,9 @@ export class ShapeData {
      * @param {Vector2D[]} vertices
      * @param {{fillColor: string, strokeWidth: number, strokeColor: string}} style
      */
-    constructor(vertices = [], style = {}) {
+    constructor(vertices = [], style = {}, z = 0) {
+
+        this.z = Math.round(z);
 
         /** @type {Vector2D[]} */
         this.vertices = vertices;

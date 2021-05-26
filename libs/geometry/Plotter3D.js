@@ -1,6 +1,7 @@
 import { Vector2D } from "../schemas/vectors/Vector2D.js";
 import { Vector3D } from "../schemas/vectors/Vector3D.js";
 import { DegRad } from "./DegRad.js";
+import { Shifter } from "./Shifter.js";
 import { Vectors } from "./Vectors.js";
 
 /** For plotting points on 3d */
@@ -18,47 +19,49 @@ export var Plotter3D = {
         /** Point coordinates relative to refPoint */
         const point = Vectors.subtract(objectPoint, refPoint);
 
-        const shiftX = Plotter3D.shiftAngle(new Vector2D(point.y, point.z), angles.x);
-        point.y = shiftX.x; 
-        point.z = shiftX.y;
 
-        
+        const shiftY = Shifter.shiftAngle(new Vector2D(point.z, point.x), angles.y);
+        point.z = shiftY.x; 
+        point.x = shiftY.y;
 
-        const shiftY = Plotter3D.shiftAngle(new Vector2D(point.x, point.z), angles.y);
-        point.x = shiftY.x; 
-        point.z = shiftY.y;
-
-        const shiftZ = Plotter3D.shiftAngle(new Vector2D(point.x, point.y), angles.z);
+        const shiftZ = Shifter.shiftAngle(new Vector2D(point.x, point.y), angles.z);
         point.x = shiftZ.x; 
         point.y = shiftZ.y;
+
+
+        const shiftX = Shifter.shiftAngle(new Vector2D(point.z, point.y), angles.x);
+        point.z = shiftX.x; 
+        point.y = shiftX.y;
 
         return point;
 
     },
 
+    /**
+     * 
+     * @param {Vector2D} point 
+     */
+    getAngle: (point) => {
 
-    /** [2D] Rotates a point about the origin (0, 0) to a given angle and returns the new coordinates
-     * @param {Vector2D} point
-     * @param {number} angle
-     * @returns {Vector2D}
-    */
-    shiftAngle: (point, angle) => {
+        const QUADRANTS = [
+            [true, true, angle => angle],
+            [false, true, angle => Math.PI - angle],
+            [false, false, angle => Math.PI + angle],
+            [true, false, angle => (Math.PI*2) - angle],
+        ];
 
-        if(point.x === 0 && point.y === 0) 
-            return point.clone();
+        let refAngle = Math.abs(Math.atan(point.y/point.x));
 
-        angle = DegRad.toRadians(angle);
-        
-        /** Point angle */
-        const pa = Math.atan(point.y/point.x);
 
-        /** Relative angle */
-        const ra = pa - angle;
+        for(const quadrant of QUADRANTS) {
+            if(quadrant[0] === (point.x >= 0) && quadrant[1] === (point.y >= 0)) {
+                refAngle = quadrant[2](refAngle);
+                break;
+            }
+        }
 
-        const distance = Vectors.getDistance(new Vector2D(0, 0), point);
-        const nx = Math.cos(ra) * distance;
-        const ny = Math.sin(ra) * distance;
+        return refAngle;
+    },
 
-        return new Vector2D(nx, ny);
-    }
+
 }

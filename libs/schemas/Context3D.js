@@ -36,7 +36,7 @@ export class Context3D {
 
         this.objects.set(`${oid}`, object);
 
-        console.log(`Added object`);
+        console.log(`Added object ${oid}`);
     }
 
 

@@ -27,6 +27,10 @@ export var Vectors = {
 
         const diffs = points1.map((coord1, i)=>coord1 - (points2[i] || 0));
         return diffs.length === 2 ? new Vector2D(...diffs) : new Vector3D(...diffs);
+    },
+
+    equal: (p1, p2) => {
+        return p1.x === p2.x && p1.y === p2.y;
     }
 
 }

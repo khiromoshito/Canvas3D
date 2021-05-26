@@ -1,4 +1,6 @@
+import { Shifter } from "../geometry/Shifter.js";
 import { Capturer } from "../view/Capturer.js";
+import { CameraPerspective } from "./CameraPerspective.js";
 import { Canvas3D } from "./Canvas3D.js";
 import { Vector3D } from "./vectors/Vector3D.js";
 import { ViewStreamer } from "./ViewStreamer.js";
@@ -46,14 +48,37 @@ export class Camera {
           * @type {Vector3D}
          */
         this.rotation = new Vector3D(options.rx || 0, options.ry || 0, options.rz || 0);
-            
+
+
+        /** How warped objects are by distance */
+        this.perspective = new CameraPerspective(70, 600);
     }
+
+
+    /** Shift this camera's position relative to its direction 
+     *  @param {number} ox
+     *  @param {number} oy
+     *  @param {number} oz
+    */
+    shift(ox, oy, oz) {
+        this.position = Shifter.shiftPoint(this.position, this.rotation, new Vector3D(ox, oy, oz));
+    }
+
+    /** Tilt this camera's angles 
+     *  @param {number} ox
+     *  @param {number} oy
+     *  @param {number} oz
+    */
+    tilt(ox, oy, oz) {
+        this.rotation = Shifter.tiltAngles(this.rotation, new Vector3D(ox, oy, oz));
+    }
+
+
 
     /**
      * Updates the view corresponding to a snapshot of the canvas
      */
     async _snap() {
-        console.log(`Camera took a snap (obj count: ${this.canvas.context.objects.size})`);
 
         const data = Capturer.capture3D(this.canvas, this);
         this.streamer._snap(data);
