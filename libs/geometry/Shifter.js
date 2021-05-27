@@ -61,23 +61,23 @@ export var Shifter = {
      * @returns {Vector2D}
     */
 
-    shiftAngle: (point, angle) => {
+    shiftAngle: (x, y, angle) => {
 
-         if((point.x === 0 && point.y === 0) || angle === 0) 
-             return point.clone();
+         if((x === 0 && y === 0) || angle === 0) 
+             return [x, y];
 
         angle = DegRad.toRadians(angle);
         
         /** Point angle */
-        const pa = Plotter3D.getAngle(point);
+        const pa = Plotter3D.getAngle(x, y);
 
         /** Relative angle */
         const ra = pa - angle;
 
-        const distance = Vectors.getDistance(new Vector2D(0, 0), point);
+        const distance = Math.sqrt((x**2) + (y**2));
         const nx = Math.cos(ra) * distance;
         const ny = Math.sin(ra) * distance;
 
-        return new Vector2D(nx, ny);
-    },
+        return [nx, ny];
+    }
 }

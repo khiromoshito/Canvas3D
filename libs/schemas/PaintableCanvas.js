@@ -19,8 +19,8 @@ export class PaintableCanvas {
     render(data) {
         const shapes = data.getShapes();
         const context = this.canvas.getContext("2d");
-        const dimensions = new Vector2D(this.canvas.width, this.canvas.height);
-        context.clearRect(0, 0, dimensions.x, dimensions.y);
+        const dimensions = [this.canvas.width, this.canvas.height];
+        context.clearRect(0, 0, dimensions[0], dimensions[1]);
 
         shapes.forEach(shape => this.drawShape(context, dimensions, shape));
     }
@@ -42,8 +42,8 @@ export class PaintableCanvas {
             
             const vertex = Plotter2D.getApparentPosition(shape.vertices[i], dimensions);
 
-            if(i===0) context.moveTo(vertex.x, vertex.y);
-            else context.lineTo(vertex.x, vertex.y);
+            if(i===0) context.moveTo(vertex[0], vertex[1]);
+            else context.lineTo(vertex[0], vertex[1]);
 
             //console.log(vertex);
         }

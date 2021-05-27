@@ -5,19 +5,28 @@ export class RectFrame3D {
 
     /** Represents a rectangular prism frame with position and dimensions.
      *  The position is the center of this frame.
-     * @param {{x: number, y: number, z: number, lx: number, ly: number, lz: number}} options
+     * @param {{minX: number, maxX: number, minY: number, maxY: number, minZ: number, maxZ: number}} options
     */
-    constructor(options = {}) {
+    constructor(bounds) {
         
-        /** This frame's relative position 
-         * @type {Vector3D}
-        */
-        this.position = new Vector3D(options.x || 0, options.y || 0, options.z || 0);
+        const {minX, maxX, minY, maxY, minZ, maxZ} = bounds;
 
-        /** This frame's side lengths 
-         * @type {Vector3D}
+        /** This frame's 8 vertices
+         * @type {[number, number, number][]}
         */
-        this.lengths = new Vector3D(options.lx || 0, options.ly || 0, options.lz || 0);
+        this.vertices = [
+            [minX, maxY, minZ], // leftTopFront
+            [maxX, maxY, minZ], // rightTopFront
+            [maxX, minY, minZ], // rightBottomFront
+            [minX, minY, minZ], // leftBottomFront
+            [minX, maxY, maxZ], // leftTopRear
+            [maxX, maxY, maxZ], // rightTopRear
+            [maxX, minY, maxZ], // rightBottomRear
+            [minX, minY, maxZ], // leftBottomRear
+        ];
+
+        /** @type {{minX: number, maxX: number, minY: number, maxY: number, minZ: number, maxZ: number}} */
+        this.bounds = bounds;
     }
 
     /** Returns an array `Vector3D` corresponding to this frame's eight vertices.
@@ -77,9 +86,7 @@ export class RectFrame3D {
 
     /** Returns a copy of this */
     clone() {
-        const copy = new RectFrame3D();
-        copy.position = this.position.clone();
-        copy.lengths = this.lengths.clone();
+        const copy = new RectFrame3D({...this.bounds});
 
         return copy;
     }

@@ -13,7 +13,7 @@ export class Object3D {
     constructor(model = new Model3D(), options = {}) {
 
         /** This 3d object's visual model 
-         * @type {Model3D}
+         * @type {Model3D | Mesh}
         */
         this.model = model;
 

@@ -14,16 +14,17 @@ export class StreamData2D {
 
         /** @type {Map<String, ShapeData>} */
         this.collection = new Map();
+
+        this.idList = [];
     }
 
     getShapes() {
         const shapes = [];
 
-        const shapesId = [...this.collection.keys()].sort().reverse();
+        const shapesId = this.idList.sort().reverse();
         for(const shapeId of shapesId)
             shapes.push(this.collection.get(shapeId));
 
-        
 
         return shapes;
     }
@@ -39,10 +40,17 @@ export class StreamData2D {
      * @param {ShapeData} shape
      */
     add(shape) {
-        const idNum = shape.z+"";
-        const id = `${"0".repeat(this.rangeExponent - idNum.length)}${idNum}#${++this._counter}`;
 
-        this.collection.set(id, shape);
+        const idNum = shape.z+"";
+        try {
+            const id = `${"0".repeat(this.rangeExponent - idNum.length)}${idNum}#${++this._counter}`;
+            this.collection.set(id, shape);
+            this.idList.push(id);
+        } catch {
+            throw new Error(idNum);
+            
+        }
+        
     }
 
 }

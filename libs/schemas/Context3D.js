@@ -1,4 +1,6 @@
+import { ExceptionHadler } from "../handlers/ExceptionHandler.js";
 import { Collection } from "./Collection.js";
+import { Mesh } from "./Mesh.js";
 import { Model3D } from "./Model3D.js";
 import { Object3D } from "./Object3D.js";
 import { Vector3D } from "./vectors/Vector3D.js";
@@ -27,28 +29,23 @@ export class Context3D {
     }
 
     /**
-     * Adds an `Object3D`
-     * @param {Object3D} object 
+     * Adds a model to the canvas with object options
+     * @param {Mesh | Model3D} object
+     * @param {{x?:number, y?:number, z?:number, rx?:number, ry?:number, rz?:number}} options 
      */
-    add(object) {
+    add(model, options = {}) {
+
+        if(!(model instanceof Mesh || model instanceof Model3D))
+            ExceptionHadler.throw("context3d", "Only `Mesh` and `Model3D` instances can be added to the context");
+
+        let object = new Object3D(model, options);
+
         const oid = ++this._counter;
         object.id = oid;
 
         this.objects.set(`${oid}`, object);
-
-        console.log(`Added object ${oid}`);
     }
 
-
-    /**
-     * Adds a 3d object by forming it from a raw model and object properties
-     * @param {Model3D} model 
-     * @param {{x:number, y:number, z:number, rx:number, ry:number, rz:number}} options 
-     */
-    addRaw(model, options = {}) {
-        const object = new Object3D(model, options);
-        this.add(object);
-    }
 
     /** Directly draws a line into the 3d canvas 
      * @param {Vector3D | {x: number, y: number, z: number}} p1

@@ -1,6 +1,7 @@
 import { Shifter } from "../geometry/Shifter.js";
 import { Capturer } from "../view/Capturer.js";
 import { CameraPerspective } from "./CameraPerspective.js";
+import { CameraStats } from "./CameraStats.js";
 import { Canvas3D } from "./Canvas3D.js";
 import { Vector3D } from "./vectors/Vector3D.js";
 import { ViewStreamer } from "./ViewStreamer.js";
@@ -19,6 +20,12 @@ export class Camera {
         */
         this.streamer = new ViewStreamer();
 
+
+        /** Interval for each snaps (in ms) */
+        this.tickInterval = 20;
+
+        this.ticker = null;
+
         if("canvas" in options) {
             if(options.canvas instanceof Array)
                 for(let canvas of options.canvas)
@@ -35,6 +42,9 @@ export class Camera {
 
         /** Whether this camera is rolling */
         this.rolling = false;
+
+        /** Performance statistics for this camera */
+        this.stats = new CameraStats();
 
 
 
@@ -79,18 +89,25 @@ export class Camera {
      * Updates the view corresponding to a snapshot of the canvas
      */
     async _snap() {
-
+        const startTime = Date.now();
         const data = Capturer.capture3D(this.canvas, this);
+        const endTime = Date.now();
+
+        const elapsedTime = endTime - startTime;
+
+        this.stats.update("averageParseTime", elapsedTime);
+
         this.streamer._snap(data);
     }
 
     /** Starts the camera */
     _start() {
-        this._snap();
+        this.ticker = setInterval(()=>this._snap(), this.tickInterval);
     }
 
     _stop() {
         this.rolling = false;
+        clearInterval(this.ticker);
     }
 
     

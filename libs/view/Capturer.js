@@ -20,6 +20,7 @@ export var Capturer = {
             const obj = objects.get(obkey);
 
             const rastered = Rasterer.raster(obj, camera);
+            // console.log(rastered);
             for(const rasteredShape of rastered) 
                 data.add(rasteredShape);
         }

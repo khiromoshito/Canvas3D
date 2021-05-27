@@ -73,7 +73,8 @@ export var LineSystem = {
         const b = line[0].y - (m*line[0].x);
 
         return (m*x) + b;
-    }
+    },
+
 }
 
 function isUndefined(number) {
