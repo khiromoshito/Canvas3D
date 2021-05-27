@@ -1,4 +1,8 @@
-/demo
+/demo/node_modules
+/demo/demo_old.js
+/demo/package.json
+/demo/package-lock.json
+/demo/index.js
 mesh/ClipHead-1-GBR.zip
 mesh/ClipHead-1-OBJ.zip
 mesh/clipHead-1.obj

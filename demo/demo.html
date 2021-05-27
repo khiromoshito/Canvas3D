@@ -1,0 +1,37 @@
+
+<style>
+    body {
+        margin: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+</style>
+<script src="demo.js" type="module"></script>
+
+<div style="width: 600px;">
+    
+    <canvas id="cv" height="400" width="600" style="border: 1px solid gray"></canvas>
+    <br><br>
+    <div style="position: relative;">
+        <div style="position: absolute; left: 0">
+            CAMERA<br>
+            <div id="c"></div>
+        </div>
+        <div style="position: absolute; left: 240px;">
+            <b>W</b> - forward<br>
+            <b>A</b> - left<br>
+            <b>S</b> - backward<br>
+            <b>D</b> - right
+        </div>
+        <div style="position: absolute; left: 380px;">
+            <b>UP KEY</b> - tilt up<br>
+            <b>LEFT KEY</b> - rotate left<br>
+            <b>DOWN KEY</b> - tilt down<br>
+            <b>RIGHT KEY</b> - rotate right
+        </div>
+    </div>
+    
+</div>
+
+
