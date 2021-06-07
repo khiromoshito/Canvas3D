@@ -1,5 +1,5 @@
 
-import { Canvas3D, Camera, MeshParser} from "../libs/index.js";
+import { Canvas3D, Camera, MeshParser, Vector3D} from "../libs/index.js";
 import { Controller } from "./controller.js";
 
 
@@ -21,11 +21,22 @@ async function start() {
     // Fetches obj file, parses it as Mesh model, and adds it to the context
     const file = await (await fetch("./sample.obj")).text();
     const mesh = MeshParser.parseObj(file);
-    ctx.add(mesh, {
-        x: 0,
-        y: 0,
-        z: 300
-    });
+    
+
+    for(let x = -1; x < 2; x++) {
+        for(let z = -1; z < 2; z++) {
+            ctx.add(mesh, {
+                x: x*200,
+                y: 0,
+                z: z*170
+            });
+        } 
+    }
+    
+
+
+    camera.position = new Vector3D(-267.55, 96.29, -467.96);
+    camera.rotation = new Vector3D(-2, 32, 0);
 
 
 

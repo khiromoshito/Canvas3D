@@ -53,7 +53,12 @@ export class ViewStreamer {
      * Processes data from camera
      * @param {StreamData2D} data
      */
-    _snap(data) {
-        this.canvases.forEach(paintableCanvas => paintableCanvas.render(data));
+    _snap(data, camera) {
+        this.canvases.forEach(paintableCanvas => {
+            paintableCanvas.render(data);
+            //paintableCanvas.drawGround(camera);
+        });
+
+        
     }
 }

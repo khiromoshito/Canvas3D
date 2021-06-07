@@ -3,16 +3,11 @@
 export class CameraStats {
     constructor() {
 
-        this.cache = {
-            "averageParseTime": 0
-        };
-
-
-        /** @type {Number} */
-        this.averageParseTime = 0;
-
-        /** @type */
-        this.averageParseTimeTick = 0;
+        /** @typedef {{ticks: number, temp: string | number, value: string | number}} CacheItem */
+        
+        
+        /** @type {Map<string, CacheItem>} */
+        this.cache = new Map();
 
         this.maxTick = 20;
     }
@@ -21,22 +16,31 @@ export class CameraStats {
 
     /**
      * 
-     * @param {"averageParseTime"} name 
+     * @param {"averageParseTime" | "parsed"} name 
      * @param {number} value 
      */
     update(name, value) {
-        if(name==="averageParseTime") {
-            if(this.parseTimeTick === 0)
-                this.averageParseTime = value;
-            else {
-                this.cache["averageParseTime"] = Math.round(((this.cache["averageParseTime"] + value)/2)*1000)/1000;
-        
-                if(this.averageParseTimeTick === this.maxTick) {
-                    this.averageParseTime = this.cache["averageParseTime"];
-                    this.averageParseTimeTick = 1;
-                } else this.averageParseTimeTick++;
-            }
-                
+        if(!this.cache.has(name)) this.cache.set(name, {
+                ticks: 1,
+                temp: value,
+                value: value
+            });
+
+        else {
+            const cache = this.cache.get(name);
+            cache.temp = typeof value === "number" ? 
+                Math.round(((cache.temp + value)/2)*1000)/1000 :
+                value;
+
+            if(cache.ticks === this.maxTick) {
+                cache.value = cache.temp;
+                cache.ticks = 1;
+            } else cache.ticks++;
         }
+    }
+
+
+    get(name) {
+        return this.cache.get(name)?.value;
     }
 }

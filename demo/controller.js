@@ -37,7 +37,7 @@ function update() {
     const rot = camera.rotation.toArray().map(c=>Math.round(c*100)/100);
     c.innerHTML = `Position: (${pos[0]}, ${pos[1]}, ${pos[2]})
         <br>Rotation: (${rot[0]}, ${rot[1]}, ${rot[2]})
-        <br>Avg Parse Time: ${camera.stats.averageParseTime}ms`;
+        <br>Avg Parse Time: ${camera.stats.get("averageParseTime")}ms`;
 }
 
 export var Controller = {

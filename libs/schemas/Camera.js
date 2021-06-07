@@ -11,7 +11,7 @@ export class Camera {
 
     /**
      * Captures views from a `Canvas3D`
-     * @param {{canvas: HTMLCanvasElement | HTMLCanvasElement[], x: number, y: number, z: number, rx: number, ry: number, rz: number, scale: number}} options
+     * @param {{canvas: HTMLCanvasElement | HTMLCanvasElement[], height: number, width: number, x: number, y: number, z: number, rx: number, ry: number, rz: number, scale: number}} options
      */
     constructor(options = {}) {
 
@@ -45,6 +45,9 @@ export class Camera {
 
         /** Performance statistics for this camera */
         this.stats = new CameraStats();
+
+        this.height = options.height || 10;
+        this.width = options.width || 10;
 
 
 
@@ -97,7 +100,7 @@ export class Camera {
 
         this.stats.update("averageParseTime", elapsedTime);
 
-        this.streamer._snap(data);
+        this.streamer._snap(data, this.cloneShallow());
     }
 
     /** Starts the camera */
@@ -108,6 +111,24 @@ export class Camera {
     _stop() {
         this.rolling = false;
         clearInterval(this.ticker);
+    }
+
+
+
+    /** Clones this camera without the streamer */
+    cloneShallow() {
+        const camera = new Camera();
+        camera.tickInterval = this.tickInterval;
+        camera.ticker = this.ticker;
+        camera.rolling = this.rolling;
+        camera.stats = this.stats;
+        camera.height = this.height;
+        camera.width = this.width;
+        camera.position = this.position.clone();
+        camera.rotation = this.rotation.clone();
+        camera.perspective = this.perspective.clone();
+
+        return camera;
     }
 
     

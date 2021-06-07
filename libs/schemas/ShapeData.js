@@ -8,7 +8,7 @@ export class ShapeData {
      * @param {[number, number][]} vertices
      * @param {{fillColor: string, strokeWidth: number, strokeColor: string}} style
      */
-    constructor(vertices = [], style = {}, z = 0) {
+    constructor(vertices = [], style = {}, z = 0, bounds = []) {
 
         this.z = Math.round(z);
 
@@ -17,5 +17,7 @@ export class ShapeData {
 
         /** @type {{fillColor: string, strokeWidth: number, strokeColor: string}} */
         this.style = style;
+
+        this.bounds = bounds;
     }
 }

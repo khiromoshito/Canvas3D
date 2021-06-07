@@ -124,6 +124,11 @@ export var Rasterer = {
     rasterMesh: (mesh, camera, offset) => {
         let shapes = [];
 
+        let MINX = 0;
+        let MAXX = 0;
+        let MINY = 0;
+        let MAXY = 0;
+
 
         for(const face of mesh.faces) {
 
@@ -156,14 +161,42 @@ export var Rasterer = {
                 //     relativeVertices[i] = 
                 //         Plotter2D.getRasteredPosition(relativeVertices[i], camera.perspective);
 
-                for(let i = 0; i<relativeVertices.length; i++)
-                    relativeVertices[i] = Plotter2D.getRasteredPosition(relativeVertices[i], camera.perspective);
 
-                shapes.push(
-                    new ShapeData(relativeVertices, 
-                        {fillColor: face[1], strokeColor: "black", strokeWidth: 0.5}, maxZ));
+                // let minX = 0;
+                // let maxX = 0;
+                // let minY = 0;
+                // let maxY = 0;
+
+        
+                for(let i = 0; i<relativeVertices.length; i++) {
+                    const v = Plotter2D.getRasteredPosition(relativeVertices[i], camera.perspective);
+                    // if(v[0]<minX) minX = v[0]; else
+                    // if(v[0]>maxX) maxX = v[0];
+                    // if(v[1]<minY) minY = v[1]; else
+                    // if(v[1]>maxY) maxY = v[1];
+
+                    relativeVertices[i] = v;
+                    
+                }
+
+                // if(maxX >= -camera.width/2 && minX <= camera.width/2 && 
+                //     maxY >= -camera.height/2 && minY <= camera.height/2) {
+                    shapes.push(
+                        new ShapeData(relativeVertices, 
+                            {fillColor: face[1], strokeColor: "black", strokeWidth: 0.5}, maxZ));
+
+                //     if(minX < MINX) MINX = minX;
+                //     if(maxX > MAXX) MAXX = maxX;
+                //     if(minY < MINY) MINY = minY;
+                //     if(maxY > MAXY) MAXY = maxY;
+                // }
+
+                
+                
             }
         }
+
+        camera.stats.update("parsed", shapes.length);
 
         return shapes;
     }
